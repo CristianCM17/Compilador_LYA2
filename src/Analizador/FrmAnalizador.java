@@ -30,8 +30,8 @@ public class FrmAnalizador extends javax.swing.JFrame {
         setTitle("Proyecto Final - Compilador LyA II");
         setResizable(false);
         setLocationRelativeTo(null);
-        Functions.setLineNumberOnJTextComponent(Resultado); //Añadimos NO. de lineas al Campo de Codigo de entrada
-        directorio = new Directory(this, Resultado, "Proyecto Final", ".lincode");
+        Functions.setLineNumberOnJTextComponent(jTCodigoEntrada); //Añadimos NO. de lineas al Campo de Codigo de entrada
+        directorio = new Directory(this, jTCodigoEntrada, "Proyecto Final", ".lincode");
         BotonLexico.setBackground(Color.yellow);
     }
     
@@ -43,20 +43,21 @@ public class FrmAnalizador extends javax.swing.JFrame {
 
         BotonLexico = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        Resultado = new javax.swing.JTextArea();
+        jTCodigoEntrada = new javax.swing.JTextArea();
         BotonSintactico = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        txtAnalizarLex = new javax.swing.JTextArea();
+        jTCodigoSalida = new javax.swing.JTextArea();
         IMGTecnm1 = new javax.swing.JLabel();
         IMGTecCelaya = new javax.swing.JLabel();
         Titulo = new javax.swing.JLabel();
         Analisis = new javax.swing.JLabel();
-        btnBorrarCodigo = new javax.swing.JButton();
+        btnBorrar = new javax.swing.JButton();
         Salida1 = new javax.swing.JLabel();
         BotonSemantico = new javax.swing.JButton();
         Identificadores = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tablaTokens = new javax.swing.JTextArea();
+        BotonGeneral = new javax.swing.JToggleButton();
         Menu = new javax.swing.JMenuBar();
         Archivo = new javax.swing.JMenu();
         Nuevo = new javax.swing.JMenuItem();
@@ -82,10 +83,10 @@ public class FrmAnalizador extends javax.swing.JFrame {
             }
         });
 
-        Resultado.setColumns(20);
-        Resultado.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        Resultado.setRows(5);
-        jScrollPane1.setViewportView(Resultado);
+        jTCodigoEntrada.setColumns(20);
+        jTCodigoEntrada.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        jTCodigoEntrada.setRows(5);
+        jScrollPane1.setViewportView(jTCodigoEntrada);
 
         BotonSintactico.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         BotonSintactico.setText("Análisis Sintático");
@@ -96,9 +97,9 @@ public class FrmAnalizador extends javax.swing.JFrame {
             }
         });
 
-        txtAnalizarLex.setColumns(20);
-        txtAnalizarLex.setRows(5);
-        jScrollPane2.setViewportView(txtAnalizarLex);
+        jTCodigoSalida.setColumns(20);
+        jTCodigoSalida.setRows(5);
+        jScrollPane2.setViewportView(jTCodigoSalida);
 
         IMGTecnm1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/TecNM.png"))); // NOI18N
 
@@ -110,12 +111,12 @@ public class FrmAnalizador extends javax.swing.JFrame {
         Analisis.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         Analisis.setText("Ejecución de Análisis");
 
-        btnBorrarCodigo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnBorrarCodigo.setText("Borrar ");
-        btnBorrarCodigo.setActionCommand("Borrar Código");
-        btnBorrarCodigo.addActionListener(new java.awt.event.ActionListener() {
+        btnBorrar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnBorrar.setText("Borrar ");
+        btnBorrar.setActionCommand("Borrar Código");
+        btnBorrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBorrarCodigoActionPerformed(evt);
+                btnBorrarActionPerformed(evt);
             }
         });
 
@@ -137,6 +138,13 @@ public class FrmAnalizador extends javax.swing.JFrame {
         tablaTokens.setColumns(20);
         tablaTokens.setRows(5);
         jScrollPane3.setViewportView(tablaTokens);
+
+        BotonGeneral.setText("Compilación General");
+        BotonGeneral.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotonGeneralActionPerformed(evt);
+            }
+        });
 
         Archivo.setText("Archivo");
 
@@ -235,43 +243,48 @@ public class FrmAnalizador extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(IMGTecnm1)
+                                .addGap(23, 23, 23))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(41, 41, 41)
+                                .addComponent(BotonLexico)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(BotonGeneral)
+                                    .addComponent(BotonSintactico))
+                                .addGap(9, 9, 9)))
+                        .addComponent(BotonSemantico)
+                        .addGap(425, 553, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(386, 386, 386)
+                                .addComponent(Titulo))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(169, 169, 169)
+                                .addComponent(Analisis)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(IMGTecCelaya)))
+                .addGap(37, 37, 37))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(26, 26, 26)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(Salida1)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(196, 196, 196)
-                        .addComponent(btnBorrarCodigo)))
-                .addGap(77, 77, 77)
+                        .addGap(208, 208, 208)
+                        .addComponent(btnBorrar)))
+                .addGap(47, 47, 47)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Identificadores)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE)))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(IMGTecnm1)
-                        .addGap(23, 23, 23))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(106, 106, 106)
-                                .addComponent(Analisis))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(41, 41, 41)
-                                .addComponent(BotonLexico)
-                                .addGap(18, 18, 18)
-                                .addComponent(BotonSintactico)))
-                        .addGap(9, 9, 9)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(BotonSemantico)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(55, 55, 55)
-                        .addComponent(Titulo)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
-                        .addComponent(IMGTecCelaya)))
-                .addGap(37, 37, 37))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -279,14 +292,16 @@ public class FrmAnalizador extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(IMGTecnm1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(IMGTecnm1, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(62, 62, 62)
                                 .addComponent(Titulo)
                                 .addGap(0, 0, Short.MAX_VALUE)))
-                        .addGap(46, 46, 46)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Analisis)
-                        .addGap(28, 28, 28))
+                        .addGap(18, 18, 18)
+                        .addComponent(BotonGeneral)
+                        .addGap(23, 23, 23))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(IMGTecCelaya)
@@ -295,21 +310,17 @@ public class FrmAnalizador extends javax.swing.JFrame {
                     .addComponent(BotonLexico, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(BotonSintactico, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(BotonSemantico, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(btnBorrarCodigo))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Identificadores)
-                        .addGap(21, 21, 21)))
-                .addGap(16, 16, 16)
+                    .addComponent(Identificadores)
+                    .addComponent(btnBorrar))
+                .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)
+                        .addGap(18, 18, 18)
                         .addComponent(Salida1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane3))
                 .addContainerGap())
@@ -347,19 +358,19 @@ public class FrmAnalizador extends javax.swing.JFrame {
     private void analizarLexico() throws IOException {
         int cont = 1;
 
-        String expr = (String) Resultado.getText();
+        String expr = (String) jTCodigoEntrada.getText();
         Lexico lexicos = new Lexico(new StringReader(expr));
         String resultado = "";
         while (true) {
             Tokens token = lexicos.yylex();
             if (token == null) {
-               txtAnalizarLex.setText(resultado);
+               jTCodigoSalida.setText(resultado);
                 return;
             }
             switch (token) {
                 case ERROR:
                     resultado += "Error 100  <Simbolo no definido>\n";
-                    txtAnalizarLex.setForeground(Color.red);
+                    jTCodigoSalida.setForeground(Color.red);
                     BotonLexico.setBackground(Color.red);
                     break;
             }
@@ -371,7 +382,7 @@ public class FrmAnalizador extends javax.swing.JFrame {
         int cont = 1;
         
         sym numero= new sym();
-        String expr = (String) Resultado.getText();
+        String expr = (String) jTCodigoEntrada.getText();
         Lexico lexicos = new Lexico(new StringReader(expr));
         //String resultado = "NO. LINEA \t\tSIMBOLO\nLINEA " + cont + "\n";
         String resultado = "";
@@ -635,73 +646,26 @@ public class FrmAnalizador extends javax.swing.JFrame {
     }
 
     private void BotonLexicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonLexicoActionPerformed
-        try {
-            analizarLexico();
-            tablaTokens();
-        } catch (IOException ex) {
-            Logger.getLogger(FrmAnalizador.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        if (txtAnalizarLex.getText().equals("")) {
-            BotonSintactico.setBackground(Color.yellow);
-            BotonSintactico.setEnabled(true);
-            txtAnalizarLex.setText("Analisis Léxico realizado correctamente");
-            txtAnalizarLex.setForeground(new Color(25, 111, 61));
-            BotonLexico.setBackground(Color.green);
-        } else {
-            BotonSintactico.setEnabled(false);
-        }
+        analisisLexico();
     }//GEN-LAST:event_BotonLexicoActionPerformed
 
     private void BotonSintacticoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonSintacticoActionPerformed
-        String codigo = Resultado.getText();
-        String ST = Resultado.getText();
-        Sintaxis s = new Sintaxis(new Analizador.LexicoCup(new StringReader(ST)));
-
-        try {
-            s.parse();
-            BotonSemantico.setEnabled(true);
-            txtAnalizarLex.setText("Analisis Sintáctico realizado correctamente");
-            txtAnalizarLex.setForeground(new Color(25, 111, 61));
-            BotonSintactico.setBackground(Color.green);
-        } catch (Exception ex) {
-            Symbol sym = s.getS();
-            BotonSemantico.setEnabled(false);
-            txtAnalizarLex.setText("Error de sintaxis. Linea: " + (sym.right + 1) + " Columna: " + (sym.left + 1) + ", Texto: \"" + sym.value + "\"");
-            txtAnalizarLex.setForeground(Color.red);
-            BotonSintactico.setBackground(Color.red);
-        }
+        analisisSintactico();
     }//GEN-LAST:event_BotonSintacticoActionPerformed
 
-    private void btnBorrarCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarCodigoActionPerformed
+    private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
         // TODO add your handling code here:
-        Resultado.setText(null);
+        jTCodigoEntrada.setText(null);
         tablaTokens.setText("");
-        txtAnalizarLex.setText("");
+        jTCodigoSalida.setText("");
         BotonSintactico.setEnabled(false);
         BotonSemantico.setEnabled(false);
         BotonLexico.setBackground(Color.yellow);
-    }//GEN-LAST:event_btnBorrarCodigoActionPerformed
+    }//GEN-LAST:event_btnBorrarActionPerformed
 
     private void BotonSemanticoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonSemanticoActionPerformed
         // TODO add your handling code here:
-        //String codigo = Resultado.getText();
-        try {
-            asignarTipoIncorrecto(Integer.class);
-            // Si no se lanza una excepción, la asignación fue exitosa
-            txtAnalizarLex.setText("Analisis Semantico realizado correctamente");
-            txtAnalizarLex.setForeground(new Color(25, 111, 61));
-            BotonSemantico.setBackground(Color.green);
-        } catch (ClassCastException ex) {
-            // Capturar la excepción y mostrar un mensaje de error
-            txtAnalizarLex.setText("Error de asignación de tipo de dato");
-            txtAnalizarLex.setForeground(Color.red);
-            BotonSemantico.setBackground(Color.red);
-        } catch (IllegalArgumentException ex) {
-            // Capturar la excepción y mostrar un mensaje de error
-            txtAnalizarLex.setText("Error de asignación de tipo de dato");
-            txtAnalizarLex.setForeground(Color.red);
-            BotonSemantico.setBackground(Color.red);
-        }
+        analisisSemantico();
     }//GEN-LAST:event_BotonSemanticoActionPerformed
 
     private void NuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NuevoActionPerformed
@@ -777,6 +741,13 @@ public class FrmAnalizador extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_IntegrantesActionPerformed
 
+    private void BotonGeneralActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonGeneralActionPerformed
+        // TODO add your handling code here:
+        analisisLexico();
+        analisisSintactico();
+        analisisSemantico();
+    }//GEN-LAST:event_BotonGeneralActionPerformed
+
     public static void main(String args[]) throws Exception {
 
         try {
@@ -812,6 +783,7 @@ public class FrmAnalizador extends javax.swing.JFrame {
     private javax.swing.JMenuItem Abrir;
     private javax.swing.JLabel Analisis;
     private javax.swing.JMenu Archivo;
+    private javax.swing.JToggleButton BotonGeneral;
     private javax.swing.JButton BotonLexico;
     private javax.swing.JButton BotonSemantico;
     private javax.swing.JButton BotonSintactico;
@@ -829,14 +801,74 @@ public class FrmAnalizador extends javax.swing.JFrame {
     private javax.swing.JMenuItem PDFLexico;
     private javax.swing.JMenuItem PDFSemantico;
     private javax.swing.JMenuItem PDFSintactico;
-    private javax.swing.JTextArea Resultado;
     private javax.swing.JLabel Salida1;
     private javax.swing.JLabel Titulo;
-    private javax.swing.JButton btnBorrarCodigo;
+    private javax.swing.JButton btnBorrar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTextArea jTCodigoEntrada;
+    private javax.swing.JTextArea jTCodigoSalida;
     private javax.swing.JTextArea tablaTokens;
-    private javax.swing.JTextArea txtAnalizarLex;
     // End of variables declaration//GEN-END:variables
+   
+    private void analisisLexico(){
+        try {
+            analizarLexico();
+            tablaTokens();
+        } catch (IOException ex) {
+            Logger.getLogger(FrmAnalizador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (jTCodigoSalida.getText().equals("")) {
+            BotonSintactico.setBackground(Color.yellow);
+            BotonSintactico.setEnabled(true);
+            jTCodigoSalida.setText("Analisis Léxico realizado correctamente");
+            jTCodigoSalida.setForeground(new Color(25, 111, 61));
+            BotonLexico.setBackground(Color.green);
+        } else {
+            BotonSintactico.setEnabled(false);
+        }
+    }
+    
+    private void analisisSintactico(){
+        String codigo = jTCodigoEntrada.getText();
+        String ST = jTCodigoEntrada.getText();
+        Sintaxis s = new Sintaxis(new Analizador.LexicoCup(new StringReader(ST)));
+
+        try {
+            s.parse();
+            BotonSemantico.setEnabled(true);
+            jTCodigoSalida.setText("Analisis Sintáctico realizado correctamente");
+            jTCodigoSalida.setForeground(new Color(25, 111, 61));
+            BotonSintactico.setBackground(Color.green);
+        } catch (Exception ex) {
+            Symbol sym = s.getS();
+            BotonSemantico.setEnabled(false);
+            jTCodigoSalida.setText("Error de sintaxis. Linea: " + (sym.right + 1) + " Columna: " + (sym.left + 1) + ", Texto: \"" + sym.value + "\"");
+            jTCodigoSalida.setForeground(Color.red);
+            BotonSintactico.setBackground(Color.red);
+        }
+    }
+    
+    private void analisisSemantico(){
+        //String codigo = Resultado.getText();
+        try {
+            asignarTipoIncorrecto(Integer.class);
+            // Si no se lanza una excepción, la asignación fue exitosa
+            jTCodigoSalida.setText("Analisis Semantico realizado correctamente");
+            jTCodigoSalida.setForeground(new Color(25, 111, 61));
+            BotonSemantico.setBackground(Color.green);
+        } catch (ClassCastException ex) {
+            // Capturar la excepción y mostrar un mensaje de error
+            jTCodigoSalida.setText("Error de asignación de tipo de dato");
+            jTCodigoSalida.setForeground(Color.red);
+            BotonSemantico.setBackground(Color.red);
+        } catch (IllegalArgumentException ex) {
+            // Capturar la excepción y mostrar un mensaje de error
+            jTCodigoSalida.setText("Error de asignación de tipo de dato");
+            jTCodigoSalida.setForeground(Color.red);
+            BotonSemantico.setBackground(Color.red);
+        }
+    }
+
 }
