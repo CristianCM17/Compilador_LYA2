@@ -25,43 +25,23 @@ import javax.swing.JOptionPane;
 public class FrmAnalizador extends javax.swing.JFrame {
     private Directory directorio;
     
-    private boolean verificarEstructura(String codigo) {
-        // Expresión regular para verificar estructuras básicas de C/C++
-        String patron = "\\b(if|else|for|while|do|switch|case)\\b.*\\{.*\\}";
-        Pattern pattern = Pattern.compile(patron, Pattern.DOTALL);
-
-        Matcher matcher = pattern.matcher(codigo);
-        return matcher.find();
-    }
-    
-    public static <T> T asignarTipoIncorrecto(Class<T> tipo) {
-        if (tipo == Integer.class) {
-            // Intento incorrecto de asignar un double a una variable de tipo int
-           return tipo.cast(1.5);
-        } else if (tipo == Double.class) {
-            // Intento incorrecto de asignar un String a una variable de tipo double
-            return tipo.cast("¡Esto debería ser un double!");
-        } else if (tipo == String.class) {
-            // Intento incorrecto de asignar un boolean a una variable de tipo String
-            return tipo.cast(true);
-        } else {
-            // Otros tipos de datos pueden manejarse de manera similar según sea necesario
-            throw new IllegalArgumentException("Tipo de dato no compatible");
-        }
-    }
-    
-
     public FrmAnalizador() {
         initComponents();
+        setTitle("Proyecto Final - Compilador LyA II");
+        setResizable(false);
+        setLocationRelativeTo(null);
         Functions.setLineNumberOnJTextComponent(Resultado); //Añadimos NO. de lineas al Campo de Codigo de entrada
         directorio = new Directory(this, Resultado, "Proyecto Final", ".lincode");
+        BotonLexico.setBackground(Color.yellow);
     }
+    
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        BotonAnalisis = new javax.swing.JButton();
+        BotonLexico = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         Resultado = new javax.swing.JTextArea();
         BotonSintactico = new javax.swing.JButton();
@@ -94,11 +74,11 @@ public class FrmAnalizador extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        BotonAnalisis.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        BotonAnalisis.setText("Análisis Léxico");
-        BotonAnalisis.addActionListener(new java.awt.event.ActionListener() {
+        BotonLexico.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        BotonLexico.setText("Análisis Léxico");
+        BotonLexico.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BotonAnalisisActionPerformed(evt);
+                BotonLexicoActionPerformed(evt);
             }
         });
 
@@ -253,93 +233,117 @@ public class FrmAnalizador extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addContainerGap()
-                                    .addComponent(IMGTecnm1)
-                                    .addGap(23, 23, 23))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGap(106, 106, 106)
-                                            .addComponent(Analisis))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGap(41, 41, 41)
-                                            .addComponent(BotonAnalisis)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(BotonSintactico)))
-                                    .addGap(9, 9, 9)))
-                            .addComponent(BotonSemantico))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(478, 478, 478)
-                            .addComponent(Titulo)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Salida1)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(196, 196, 196)
+                        .addComponent(btnBorrarCodigo)))
+                .addGap(77, 77, 77)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Identificadores)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(IMGTecnm1)
+                        .addGap(23, 23, 23))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(31, 31, 31)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(Salida1)
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(166, 166, 166))
                             .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 455, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(103, 103, 103)))
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(16, 16, 16)))
-                .addComponent(IMGTecCelaya)
-                .addContainerGap(28, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(196, 196, 196)
-                .addComponent(btnBorrarCodigo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Identificadores)
-                .addGap(312, 312, 312))
+                                .addGap(106, 106, 106)
+                                .addComponent(Analisis))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(41, 41, 41)
+                                .addComponent(BotonLexico)
+                                .addGap(18, 18, 18)
+                                .addComponent(BotonSintactico)))
+                        .addGap(9, 9, 9)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(BotonSemantico)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(55, 55, 55)
+                        .addComponent(Titulo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
+                        .addComponent(IMGTecCelaya)))
+                .addGap(37, 37, 37))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(IMGTecCelaya))
-                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(IMGTecnm1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(22, 22, 22)
-                                .addComponent(IMGTecnm1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(41, 41, 41)
-                                .addComponent(Titulo)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGap(62, 62, 62)
+                                .addComponent(Titulo)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(46, 46, 46)
                         .addComponent(Analisis)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(BotonAnalisis, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(BotonSintactico, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(BotonSemantico, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(20, 20, 20)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnBorrarCodigo)
-                            .addComponent(Identificadores))))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGap(28, 28, 28))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(16, 16, 16)
+                        .addContainerGap()
+                        .addComponent(IMGTecCelaya)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(BotonLexico, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(BotonSintactico, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(BotonSemantico, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(btnBorrarCodigo))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Identificadores)
+                        .addGap(21, 21, 21)))
+                .addGap(16, 16, 16)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
                         .addComponent(Salida1)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane3))
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    private boolean verificarEstructura(String codigo) {
+        // Expresión regular para verificar estructuras básicas de C/C++
+        String patron = "\\b(if|else|for|while|do|switch|case)\\b.*\\{.*\\}";
+        Pattern pattern = Pattern.compile(patron, Pattern.DOTALL);
+
+        Matcher matcher = pattern.matcher(codigo);
+        return matcher.find();
+    }
+    
+    public static <T> T asignarTipoIncorrecto(Class<T> tipo) {
+        if (tipo == Integer.class) {
+            // Intento incorrecto de asignar un double a una variable de tipo int
+           return tipo.cast(1.5);
+        } else if (tipo == Double.class) {
+            // Intento incorrecto de asignar un String a una variable de tipo double
+            return tipo.cast("¡Esto debería ser un double!");
+        } else if (tipo == String.class) {
+            // Intento incorrecto de asignar un boolean a una variable de tipo String
+            return tipo.cast(true);
+        } else {
+            // Otros tipos de datos pueden manejarse de manera similar según sea necesario
+            throw new IllegalArgumentException("Tipo de dato no compatible");
+        }
+    }
+    
     private void analizarLexico() throws IOException {
         int cont = 1;
 
@@ -355,6 +359,8 @@ public class FrmAnalizador extends javax.swing.JFrame {
             switch (token) {
                 case ERROR:
                     resultado += "Error 100  <Simbolo no definido>\n";
+                    txtAnalizarLex.setForeground(Color.red);
+                    BotonLexico.setBackground(Color.red);
                     break;
             }
         }
@@ -628,7 +634,7 @@ public class FrmAnalizador extends javax.swing.JFrame {
         }
     }
 
-    private void BotonAnalisisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonAnalisisActionPerformed
+    private void BotonLexicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonLexicoActionPerformed
         try {
             analizarLexico();
             tablaTokens();
@@ -636,13 +642,15 @@ public class FrmAnalizador extends javax.swing.JFrame {
             Logger.getLogger(FrmAnalizador.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (txtAnalizarLex.getText().equals("")) {
+            BotonSintactico.setBackground(Color.yellow);
             BotonSintactico.setEnabled(true);
             txtAnalizarLex.setText("Analisis Léxico realizado correctamente");
             txtAnalizarLex.setForeground(new Color(25, 111, 61));
+            BotonLexico.setBackground(Color.green);
         } else {
             BotonSintactico.setEnabled(false);
         }
-    }//GEN-LAST:event_BotonAnalisisActionPerformed
+    }//GEN-LAST:event_BotonLexicoActionPerformed
 
     private void BotonSintacticoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonSintacticoActionPerformed
         String codigo = Resultado.getText();
@@ -654,11 +662,13 @@ public class FrmAnalizador extends javax.swing.JFrame {
             BotonSemantico.setEnabled(true);
             txtAnalizarLex.setText("Analisis Sintáctico realizado correctamente");
             txtAnalizarLex.setForeground(new Color(25, 111, 61));
+            BotonSintactico.setBackground(Color.green);
         } catch (Exception ex) {
             Symbol sym = s.getS();
             BotonSemantico.setEnabled(false);
             txtAnalizarLex.setText("Error de sintaxis. Linea: " + (sym.right + 1) + " Columna: " + (sym.left + 1) + ", Texto: \"" + sym.value + "\"");
             txtAnalizarLex.setForeground(Color.red);
+            BotonSintactico.setBackground(Color.red);
         }
     }//GEN-LAST:event_BotonSintacticoActionPerformed
 
@@ -669,6 +679,7 @@ public class FrmAnalizador extends javax.swing.JFrame {
         txtAnalizarLex.setText("");
         BotonSintactico.setEnabled(false);
         BotonSemantico.setEnabled(false);
+        BotonLexico.setBackground(Color.yellow);
     }//GEN-LAST:event_btnBorrarCodigoActionPerformed
 
     private void BotonSemanticoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonSemanticoActionPerformed
@@ -679,16 +690,17 @@ public class FrmAnalizador extends javax.swing.JFrame {
             // Si no se lanza una excepción, la asignación fue exitosa
             txtAnalizarLex.setText("Analisis Semantico realizado correctamente");
             txtAnalizarLex.setForeground(new Color(25, 111, 61));
+            BotonSemantico.setBackground(Color.green);
         } catch (ClassCastException ex) {
             // Capturar la excepción y mostrar un mensaje de error
             txtAnalizarLex.setText("Error de asignación de tipo de dato");
             txtAnalizarLex.setForeground(Color.red);
-            Resultado.setText("");
+            BotonSemantico.setBackground(Color.red);
         } catch (IllegalArgumentException ex) {
             // Capturar la excepción y mostrar un mensaje de error
             txtAnalizarLex.setText("Error de asignación de tipo de dato");
             txtAnalizarLex.setForeground(Color.red);
-            Resultado.setText("");
+            BotonSemantico.setBackground(Color.red);
         }
     }//GEN-LAST:event_BotonSemanticoActionPerformed
 
@@ -701,14 +713,14 @@ public class FrmAnalizador extends javax.swing.JFrame {
     private void AbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AbrirActionPerformed
         // TODO add your handling code here:
         if(directorio.Open()){
-            BotonAnalisis.setEnabled(true);
+            BotonLexico.setEnabled(true);
         }
     }//GEN-LAST:event_AbrirActionPerformed
 
     private void GuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarActionPerformed
         // TODO add your handling code here:
         if(directorio.Save()){
-            BotonAnalisis.setEnabled(true);
+            BotonLexico.setEnabled(true);
         }
     }//GEN-LAST:event_GuardarActionPerformed
 
@@ -800,7 +812,7 @@ public class FrmAnalizador extends javax.swing.JFrame {
     private javax.swing.JMenuItem Abrir;
     private javax.swing.JLabel Analisis;
     private javax.swing.JMenu Archivo;
-    private javax.swing.JButton BotonAnalisis;
+    private javax.swing.JButton BotonLexico;
     private javax.swing.JButton BotonSemantico;
     private javax.swing.JButton BotonSintactico;
     private javax.swing.JMenuItem Documentacion;
