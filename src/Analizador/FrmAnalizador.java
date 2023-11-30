@@ -646,7 +646,12 @@ public class FrmAnalizador extends javax.swing.JFrame {
     }
 
     private void BotonLexicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonLexicoActionPerformed
-        analisisLexico();
+        if (jTCodigoEntrada.getText().trim().isEmpty()) {
+            jTCodigoSalida.setText("Introduce código, esta vacio.");
+            jTCodigoSalida.setForeground(Color.red);
+        }else{
+            analisisLexico();
+        }
     }//GEN-LAST:event_BotonLexicoActionPerformed
 
     private void BotonSintacticoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonSintacticoActionPerformed
@@ -743,9 +748,15 @@ public class FrmAnalizador extends javax.swing.JFrame {
 
     private void BotonGeneralActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonGeneralActionPerformed
         // TODO add your handling code here:
-        analisisLexico();
-        analisisSintactico();
-        analisisSemantico();
+        if (jTCodigoEntrada.getText().trim().isEmpty()) {
+            jTCodigoSalida.setText("Introduce Código, esta vacio.");
+            jTCodigoSalida.setForeground(Color.red);
+        }else{
+            analisisLexico();
+            analisisSintactico();
+            analisisSemantico();
+        } 
+        
     }//GEN-LAST:event_BotonGeneralActionPerformed
 
     public static void main(String args[]) throws Exception {
@@ -830,8 +841,7 @@ public class FrmAnalizador extends javax.swing.JFrame {
         }
     }
     
-    private void analisisSintactico(){
-        String codigo = jTCodigoEntrada.getText();
+    private void analisisSintactico() {
         String ST = jTCodigoEntrada.getText();
         Sintaxis s = new Sintaxis(new Analizador.LexicoCup(new StringReader(ST)));
 
@@ -844,11 +854,16 @@ public class FrmAnalizador extends javax.swing.JFrame {
         } catch (Exception ex) {
             Symbol sym = s.getS();
             BotonSemantico.setEnabled(false);
-            jTCodigoSalida.setText("Error de sintaxis. Linea: " + (sym.right + 1) + " Columna: " + (sym.left + 1) + ", Texto: \"" + sym.value + "\"");
+
+            // Verificar si sym.value es null y proporcionar un valor predeterminado si es el caso
+            String errorTexto = (sym.value != null) ? sym.value.toString() : "Eliminaste una llave";
+
+            jTCodigoSalida.setText("!! Error Sintáctico !!\n" + errorTexto);
             jTCodigoSalida.setForeground(Color.red);
             BotonSintactico.setBackground(Color.red);
         }
     }
+
     
     private void analisisSemantico(){
         //String codigo = Resultado.getText();
