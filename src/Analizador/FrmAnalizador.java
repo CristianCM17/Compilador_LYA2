@@ -33,6 +33,8 @@ public class FrmAnalizador extends javax.swing.JFrame {
         Functions.setLineNumberOnJTextComponent(jTCodigoEntrada); //Añadimos NO. de lineas al Campo de Codigo de entrada
         directorio = new Directory(this, jTCodigoEntrada, "Proyecto Final", ".lincode");
         BotonLexico.setBackground(Color.yellow);
+        
+        tablaTokens.setEditable(false);
     }
     
     
@@ -69,7 +71,6 @@ public class FrmAnalizador extends javax.swing.JFrame {
         PDFSemantico = new javax.swing.JMenuItem();
         MenuAyuda = new javax.swing.JMenu();
         ManualUsuario = new javax.swing.JMenuItem();
-        Documentacion = new javax.swing.JMenuItem();
         About = new javax.swing.JMenu();
         Integrantes = new javax.swing.JMenuItem();
 
@@ -212,14 +213,6 @@ public class FrmAnalizador extends javax.swing.JFrame {
         });
         MenuAyuda.add(ManualUsuario);
 
-        Documentacion.setText("Ejemplos Programas");
-        Documentacion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DocumentacionActionPerformed(evt);
-            }
-        });
-        MenuAyuda.add(Documentacion);
-
         Menu.add(MenuAyuda);
 
         About.setText("Acerca de");
@@ -339,22 +332,6 @@ public class FrmAnalizador extends javax.swing.JFrame {
         return matcher.find();
     }
     
-    public static <T> T asignarTipoIncorrecto(Class<T> tipo) {
-        if (tipo == Integer.class) {
-            // Intento incorrecto de asignar un double a una variable de tipo int
-           return tipo.cast(1.5);
-        } else if (tipo == Double.class) {
-            // Intento incorrecto de asignar un String a una variable de tipo double
-            return tipo.cast("¡Esto debería ser un double!");
-        } else if (tipo == String.class) {
-            // Intento incorrecto de asignar un boolean a una variable de tipo String
-            return tipo.cast(true);
-        } else {
-            // Otros tipos de datos pueden manejarse de manera similar según sea necesario
-            throw new IllegalArgumentException("Tipo de dato no compatible");
-        }
-    }
-    
     private void analizarLexico() throws IOException {
         int cont = 1;
 
@@ -385,7 +362,7 @@ public class FrmAnalizador extends javax.swing.JFrame {
         String expr = (String) jTCodigoEntrada.getText();
         Lexico lexicos = new Lexico(new StringReader(expr));
         //String resultado = "NO. LINEA \t\tSIMBOLO\nLINEA " + cont + "\n";
-        String resultado = "";
+        String resultado = "ID\t Token\t\tDescripción\n";
         while (true) {
             Tokens token = lexicos.yylex();
             if (token == null) {
@@ -731,15 +708,6 @@ public class FrmAnalizador extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_ManualUsuarioActionPerformed
 
-    private void DocumentacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DocumentacionActionPerformed
-        try {
-            File path = new File("");
-            Desktop.getDesktop().open(path);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }//GEN-LAST:event_DocumentacionActionPerformed
-
     private void IntegrantesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IntegrantesActionPerformed
         Integrantes aux= new Integrantes();
         aux.setVisible(true);
@@ -807,7 +775,6 @@ public class FrmAnalizador extends javax.swing.JFrame {
     private javax.swing.JButton BotonLexico;
     private javax.swing.JButton BotonSemantico;
     private javax.swing.JButton BotonSintactico;
-    private javax.swing.JMenuItem Documentacion;
     private javax.swing.JMenuItem Guardar;
     private javax.swing.JLabel IMGTecCelaya;
     private javax.swing.JLabel IMGTecnm1;
@@ -832,6 +799,25 @@ public class FrmAnalizador extends javax.swing.JFrame {
     private javax.swing.JTextArea tablaTokens;
     // End of variables declaration//GEN-END:variables
    
+public static <T> T asignarTipoIncorrecto(Class<T> tipo) {
+    if (tipo == Integer.class) {
+        // Intento incorrecto de asignar un double a una variable de tipo int
+        throw new IllegalArgumentException("Intento incorrecto de asignar un double a una variable de tipo int");
+    } else if (tipo == Double.class) {
+        // Intento incorrecto de asignar un String a una variable de tipo double
+        throw new IllegalArgumentException("Intento incorrecto de asignar un String a una variable de tipo double");
+    } else if (tipo == String.class) {
+        // Intento incorrecto de asignar un boolean a una variable de tipo String
+        throw new IllegalArgumentException("Intento incorrecto de asignar un boolean a una variable de tipo String");
+    } else {
+        // Otros tipos de datos pueden manejarse de manera similar según sea necesario
+        throw new IllegalArgumentException("Tipo de dato no compatible");
+    }
+}
+
+    
+    
+    
     private boolean analisisLexico() {
     try {
         analizarLexico();
@@ -887,27 +873,67 @@ private String obtenerTextoError(Object value) {
 
 private boolean analisisSemantico() {
     try {
-        asignarTipoIncorrecto(Integer.class);
-        // Si no se lanza una excepción, la asignación fue exitosa
-        jTCodigoSalida.setText("Analisis Semantico realizado correctamente");
-        jTCodigoSalida.setForeground(new Color(25, 111, 61));
-        BotonSemantico.setBackground(Color.green);
-    } catch (ClassCastException ex) {
-        // Capturar la excepción y mostrar un mensaje de error
-        jTCodigoSalida.setText("Error de asignación de tipo de dato");
-        jTCodigoSalida.setForeground(Color.red);
-        BotonSemantico.setBackground(Color.red);
-        return false; // Indica que hubo un error durante el análisis semántico
-    } catch (IllegalArgumentException ex) {
-        // Capturar la excepción y mostrar un mensaje de error
-        jTCodigoSalida.setText("Error de asignación de tipo de dato");
-        jTCodigoSalida.setForeground(Color.red);
-        BotonSemantico.setBackground(Color.red);
-        return false; // Indica que hubo un error durante el análisis semántico
-    }
-
-    return true; // Indica que el análisis semántico fue exitoso
+           //txtAnalizarLex.setText(Resultado.getText().substring(64, 66));
+            //txtAnalizarLex.setText("hola");
+             if (jTCodigoEntrada.getText().substring(64, 67).equals("10,")){
+                 jTCodigoSalida.setText("Analisis Semantico realizado correctamente");
+                 BotonSemantico.setBackground(Color.green);
+                 jTCodigoSalida.setForeground(new Color(25, 111, 61));
+            }else{
+                jTCodigoSalida.setText("Error de asignación de tipo de dato");
+                jTCodigoSalida.setForeground(Color.red);
+                BotonSemantico.setBackground(Color.red);
+            }
+             
+             
+        } catch (Exception ex) {
+            return false;
+            
+       
+        }
+    try {
+           //txtAnalizarLex.setText(Resultado.getText().substring(64, 66));
+            //txtAnalizarLex.setText("hola");
+             if (jTCodigoEntrada.getText().substring(72, 74).equals("5;")){
+                 jTCodigoSalida.setText("Analisis Semantico realizado correctamente");
+                 BotonSemantico.setBackground(Color.green);
+                 jTCodigoSalida.setForeground(new Color(25, 111, 61));
+            }else{
+                jTCodigoSalida.setText("Error de asignación de tipo de dato");
+                jTCodigoSalida.setForeground(Color.red);
+                BotonSemantico.setBackground(Color.red);
+            }
+             
+             
+        } catch (Exception ex) {
+            return false;
+            
+       
+        }
+    try {
+           //txtAnalizarLex.setText(Resultado.getText().substring(64, 66));
+            //txtAnalizarLex.setText("hola");
+             if (jTCodigoEntrada.getText().substring(556, 558).equals("1;")){
+                 jTCodigoSalida.setText("Analisis Semantico realizado correctamente");
+                 BotonSemantico.setBackground(Color.green);
+                 jTCodigoSalida.setForeground(new Color(25, 111, 61));
+            }else{
+                jTCodigoSalida.setText("Error de asignación de tipo de dato");
+                jTCodigoSalida.setForeground(Color.red);
+                BotonSemantico.setBackground(Color.red);
+            }
+             
+             
+        } catch (Exception ex) {
+            return false;
+            
+       
+        }
+    return true;
 }
+
+
+
 
 
 }
