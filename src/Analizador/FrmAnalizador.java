@@ -745,17 +745,26 @@ public class FrmAnalizador extends javax.swing.JFrame {
         aux.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_IntegrantesActionPerformed
-
+                                                              
     private void BotonGeneralActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonGeneralActionPerformed
         // TODO add your handling code here:
-        if (jTCodigoEntrada.getText().trim().isEmpty()) {
-            jTCodigoSalida.setText("Introduce Código, esta vacio.");
+         if (jTCodigoEntrada.getText().trim().isEmpty()) {
+        jTCodigoSalida.setText("Introduce Código, está vacío.");
+        jTCodigoSalida.setForeground(Color.red);
+    } else {
+        boolean lexicoExitoso = analisisLexico();
+        boolean sintacticoExitoso = analisisSintactico();
+        boolean semanticoExitoso = analisisSemantico();
+
+        if (lexicoExitoso && sintacticoExitoso && semanticoExitoso) {
+            BotonSemantico.setBackground(Color.green);
+            jTCodigoSalida.setText("Análisis Completado");
+        } else {
+            BotonSemantico.setBackground(Color.red);
+            jTCodigoSalida.setText("Análisis con errores. Verifica el código.");
             jTCodigoSalida.setForeground(Color.red);
-        }else{
-            analisisLexico();
-            analisisSintactico();
-            analisisSemantico();
-        } 
+        }
+    }
         
     }//GEN-LAST:event_BotonGeneralActionPerformed
 
@@ -823,67 +832,82 @@ public class FrmAnalizador extends javax.swing.JFrame {
     private javax.swing.JTextArea tablaTokens;
     // End of variables declaration//GEN-END:variables
    
-    private void analisisLexico(){
-        try {
-            analizarLexico();
-            tablaTokens();
-        } catch (IOException ex) {
-            Logger.getLogger(FrmAnalizador.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        if (jTCodigoSalida.getText().equals("")) {
-            BotonSintactico.setBackground(Color.yellow);
-            BotonSintactico.setEnabled(true);
-            jTCodigoSalida.setText("Analisis Léxico realizado correctamente");
-            jTCodigoSalida.setForeground(new Color(25, 111, 61));
-            BotonLexico.setBackground(Color.green);
-        } else {
-            BotonSintactico.setEnabled(false);
-        }
-    }
-    
-    private void analisisSintactico() {
-        String ST = jTCodigoEntrada.getText();
-        Sintaxis s = new Sintaxis(new Analizador.LexicoCup(new StringReader(ST)));
-
-        try {
-            s.parse();
-            BotonSemantico.setEnabled(true);
-            jTCodigoSalida.setText("Analisis Sintáctico realizado correctamente");
-            jTCodigoSalida.setForeground(new Color(25, 111, 61));
-            BotonSintactico.setBackground(Color.green);
-        } catch (Exception ex) {
-            Symbol sym = s.getS();
-            BotonSemantico.setEnabled(false);
-
-            // Verificar si sym.value es null y proporcionar un valor predeterminado si es el caso
-            String errorTexto = (sym.value != null) ? sym.value.toString() : "Eliminaste una llave";
-
-            jTCodigoSalida.setText("!! Error Sintáctico !!\n" + errorTexto);
-            jTCodigoSalida.setForeground(Color.red);
-            BotonSintactico.setBackground(Color.red);
-        }
+    private boolean analisisLexico() {
+    try {
+        analizarLexico();
+        tablaTokens();
+    } catch (IOException ex) {
+        Logger.getLogger(FrmAnalizador.class.getName()).log(Level.SEVERE, null, ex);
+        return false; // Indica que hubo un error durante el análisis léxico
     }
 
-    
-    private void analisisSemantico(){
-        //String codigo = Resultado.getText();
-        try {
-            asignarTipoIncorrecto(Integer.class);
-            // Si no se lanza una excepción, la asignación fue exitosa
-            jTCodigoSalida.setText("Analisis Semantico realizado correctamente");
-            jTCodigoSalida.setForeground(new Color(25, 111, 61));
-            BotonSemantico.setBackground(Color.green);
-        } catch (ClassCastException ex) {
-            // Capturar la excepción y mostrar un mensaje de error
-            jTCodigoSalida.setText("Error de asignación de tipo de dato");
-            jTCodigoSalida.setForeground(Color.red);
-            BotonSemantico.setBackground(Color.red);
-        } catch (IllegalArgumentException ex) {
-            // Capturar la excepción y mostrar un mensaje de error
-            jTCodigoSalida.setText("Error de asignación de tipo de dato");
-            jTCodigoSalida.setForeground(Color.red);
-            BotonSemantico.setBackground(Color.red);
-        }
+    if (jTCodigoSalida.getText().equals("")) {
+        BotonSintactico.setBackground(Color.yellow);
+        BotonSintactico.setEnabled(true);
+        jTCodigoSalida.setText("Analisis Léxico realizado correctamente");
+        jTCodigoSalida.setForeground(new Color(25, 111, 61));
+        BotonLexico.setBackground(Color.green);
+    } else {
+        BotonSintactico.setEnabled(false);
     }
+
+    return true; // Indica que el análisis léxico fue exitoso
+}
+
+private boolean analisisSintactico() {
+    String ST = jTCodigoEntrada.getText();
+    Sintaxis s = new Sintaxis(new Analizador.LexicoCup(new StringReader(ST)));
+
+    try {
+        s.parse();
+        BotonSemantico.setEnabled(true);
+        jTCodigoSalida.setText("Analisis Sintáctico realizado correctamente");
+        jTCodigoSalida.setForeground(new Color(25, 111, 61));
+        BotonSintactico.setBackground(Color.green);
+        BotonSemantico.setBackground(Color.yellow);
+    } catch (Exception ex) {
+        Symbol sym = s.getS();
+        BotonSemantico.setEnabled(false);
+
+        String errorTexto = obtenerTextoError(sym.value);
+
+        jTCodigoSalida.setText("Error de sintaxis. Linea: " + (sym.right + 1) + " Columna: " + (sym.left + 1) + ", Texto: \"" + errorTexto + "\"");
+        jTCodigoSalida.setForeground(Color.red);
+        BotonSintactico.setBackground(Color.red);
+        return false; // Indica que hubo un error durante el análisis sintáctico
+    }
+
+    return true; // Indica que el análisis sintáctico fue exitoso
+}
+
+private String obtenerTextoError(Object value) {
+    return (value != null) ? value.toString() : "Eliminaste una llave";
+}
+
+
+private boolean analisisSemantico() {
+    try {
+        asignarTipoIncorrecto(Integer.class);
+        // Si no se lanza una excepción, la asignación fue exitosa
+        jTCodigoSalida.setText("Analisis Semantico realizado correctamente");
+        jTCodigoSalida.setForeground(new Color(25, 111, 61));
+        BotonSemantico.setBackground(Color.green);
+    } catch (ClassCastException ex) {
+        // Capturar la excepción y mostrar un mensaje de error
+        jTCodigoSalida.setText("Error de asignación de tipo de dato");
+        jTCodigoSalida.setForeground(Color.red);
+        BotonSemantico.setBackground(Color.red);
+        return false; // Indica que hubo un error durante el análisis semántico
+    } catch (IllegalArgumentException ex) {
+        // Capturar la excepción y mostrar un mensaje de error
+        jTCodigoSalida.setText("Error de asignación de tipo de dato");
+        jTCodigoSalida.setForeground(Color.red);
+        BotonSemantico.setBackground(Color.red);
+        return false; // Indica que hubo un error durante el análisis semántico
+    }
+
+    return true; // Indica que el análisis semántico fue exitoso
+}
+
 
 }
