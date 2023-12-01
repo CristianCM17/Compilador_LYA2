@@ -72,7 +72,6 @@ public class FrmAnalizador extends javax.swing.JFrame {
         PDFSemantico = new javax.swing.JMenuItem();
         MenuAyuda = new javax.swing.JMenu();
         ManualUsuario = new javax.swing.JMenuItem();
-        Documentacion = new javax.swing.JMenuItem();
         About = new javax.swing.JMenu();
         Integrantes = new javax.swing.JMenuItem();
 
@@ -214,14 +213,6 @@ public class FrmAnalizador extends javax.swing.JFrame {
             }
         });
         MenuAyuda.add(ManualUsuario);
-
-        Documentacion.setText("Ejemplos Programas");
-        Documentacion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DocumentacionActionPerformed(evt);
-            }
-        });
-        MenuAyuda.add(Documentacion);
 
         Menu.add(MenuAyuda);
 
@@ -711,7 +702,7 @@ public class FrmAnalizador extends javax.swing.JFrame {
 
     private void ManualUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ManualUsuarioActionPerformed
         try {
-            File path = new File("");
+            File path = new File("src/assets/pdf/proyecto.pdf");
             Desktop.getDesktop().open(path);
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -745,15 +736,6 @@ public class FrmAnalizador extends javax.swing.JFrame {
     }
         
     }//GEN-LAST:event_BotonGeneralActionPerformed
-
-    private void DocumentacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DocumentacionActionPerformed
-        try {
-            File path = new File("");
-            Desktop.getDesktop().open(path);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }//GEN-LAST:event_DocumentacionActionPerformed
 
     public static void main(String args[]) throws Exception {
 
@@ -794,7 +776,6 @@ public class FrmAnalizador extends javax.swing.JFrame {
     private javax.swing.JButton BotonLexico;
     private javax.swing.JButton BotonSemantico;
     private javax.swing.JButton BotonSintactico;
-    private javax.swing.JMenuItem Documentacion;
     private javax.swing.JMenuItem Guardar;
     private javax.swing.JLabel IMGTecCelaya;
     private javax.swing.JLabel IMGTecnm1;
